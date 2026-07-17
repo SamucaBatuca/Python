@@ -2,7 +2,7 @@ import numpy as np
 
 class boat:
     # constructor
-    def __init__(self, size:int, seed: int, coordenates: int, direction: int):
+    def __init__(self, size:int, seed: int, coordenates: int, direction: bool):
         self.size = size
         self.seed = seed
         self.coordenates = coordenates
