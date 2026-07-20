@@ -20,13 +20,14 @@ class Tabletop:
     def __init__(self, x: int, y: int):
         self.x = x + 1
         self.y = y + 1
+        self.grid = np.zeros((self.x, self.y), dtype=str)
         
     # create the grid that will be used to display the game
     def create_grid(self):
-        self.grid = np.zeros((self.x, self.y), dtype=str)
+        
         for i in range(self.x):
             for j in range(self.y):
-                self.grid[i][j] = '#'
+                self.grid[i][j] = '~'
         self.grid[0][0] = ' '
         for i in range(1, self.x):
             self.grid[i][0] = str(i-1)

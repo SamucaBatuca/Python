@@ -4,6 +4,71 @@ import Game_map as Map
 import random
 
 boat_list = []
+tabletop : Map.Tabletop
+map: Map.Map
+
+
+def game(mode:int):
+    bullets : int
+    # settings for the game mode
+    match mode:
+        case 1:
+            create_boats(4)
+            map = Map.Map(5,5)
+            tabletop = Map.Tabletop(5,5)
+            tabletop.create_grid()
+            map.create_grid()
+            bullets = 18
+        case 2:
+            create_boats(5)
+            create_boats(3)
+            map = Map.Map(10,10)
+            tabletop = Map.Tabletop(10,10)
+            tabletop.create_grid()
+            map.create_grid()
+            bullets = 32
+        case 3:
+            for i in range(2):
+                create_boats(5)
+            create_boats(3)
+            map = Map.Map(10,10)
+            tabletop = Map.Tabletop(10,10)
+            tabletop.create_grid()
+            map.create_grid()
+            bullets = 32
+    
+    # game starts
+    while(bullets):
+        aux : int = 0
+        tabletop.display
+
+        match aux:
+            case 1:
+                print("This is out of our range, Sir. Please, shoot again.")
+            case 2:
+                print("You already shoot this location, Sir. Please, shoot again.")
+
+
+        cx,cy = int(input(f"You have {bullets} bullets remaining.\nInform the coordenate (X,Y) of the next shot, Sir:\nAnswer: ").split())
+
+        if cx > tabletop.x or cy > tabletop.y:
+            aux = 1
+        elif map.grid[cy][cx] != 0 and tabletop.grid != '~':
+            aux = 2
+        elif map.grid[cy][cx] != 0:
+            aux = map.grid[cy][cx]
+            tabletop.grid[cy][cx] = aux
+            aux = 0
+            bullets-=1
+        else:
+            tabletop.grid[cy][cx] = '~'
+        
+
+
+
+
+            
+
 
 def create_boats(quantity: int):
     for i in range(quantity):
@@ -105,23 +170,50 @@ def place_boat(barco: Boats.boat, mapa: Map.Map, time: int):
                     return place_boat(barco, mapa, time + 1)
 
 
-            
-            
+def menu(op:int):
+    aux : int
     
+    match op:
+        case 0:
+            print("~"*60)
+            print("\t\tWelcome to the battleship!")
+            print("\t\t   Select the game mode:")
+            print("\t1) Easy \t2) Medium \t3) Hard\n\n")
+            print("~"*60)
+            print("\033[2A", end='')                    # move the cursor 2 lines up
+            while True:
+                
+
+                try:
+                    aux = int(input("\033[2KAnswer: "))
+                    print("\033[2B",end='')             # move the cursor 2 lines down
+                    break
+                except ValueError:
+                    print("\033[5A")
+                    print("\033[K\t  Wrong choice. Please, choose again:")
+                    print("\t1) Easy \t2) Medium \t3) Hard\n")
+                    #print("\033[1B",end='')
+                    
+
+            if aux > 3 or aux < 0:
+                while(aux > 3 or aux < 0):
+                    print("\033[6A")
+                    print("\033[K\t  Wrong choice. Please, choose again:")
+                    print("\t1) Easy \t2) Medium \t3) Hard\n")
+                    aux = int(input("\033[KAnswer: "))
+                    print("\033[2B",end='')
+            game(aux)
+        case 1:
+            create_boats()  
 
 
+menu(0)
 
-barco = Boats.boat(3,seed=random.randint(0,10),coordenates=random.randint(0,10), direction=random.randint(0,1))
-tabuleiro = Map.Tabletop(10,10)
-mapa = Map.Map(10,10)
-#barco = Boats.boat(2,2,10,0)
-barco.value = 7
-mapa.create_grid()
 
+""""
 create_boats(5)
 for i in range(len(boat_list)):
     print(boat_list[i].value, boat_list[i].seed, boat_list[i].coordenates, boat_list[i].direction)
     place_boat(boat_list[i],mapa,0)
     
-    
-print(mapa.grid)
+"""
