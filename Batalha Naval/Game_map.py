@@ -3,8 +3,8 @@ import Boats
 
 class Map:
     def __init__(self, x: int, y: int):
-        self.x = x + 1
-        self.y = y + 1
+        self.x = x
+        self.y = y
         self.grid = np.zeros((self.x,self.y), dtype=int)
 
     def create_grid(self):
