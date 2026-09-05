@@ -26,7 +26,7 @@ def game(mode:int):
             tabletop.create_grid()
             map.create_grid()
             create_boats(5, map.x-1, 0)
-            create_boats(3, map-1, 0)
+            create_boats(3, map.x-1, 0)
             bullets = 32
         case 3:
             map = Map.Map(10,10)
@@ -40,7 +40,7 @@ def game(mode:int):
     
     goal : int = 0
     for i in range(len(boat_list)):
-        print(boat_list[i].value, boat_list[i].seed, boat_list[i].coordenates, boat_list[i].direction)
+        print(boat_list[i].value, boat_list[i].id ,boat_list[i].seed, boat_list[i].coordenates, boat_list[i].direction)
         goal += boat_list[i].value
         place_boat(boat_list[i],map,0)
 
@@ -84,25 +84,28 @@ def game(mode:int):
 
 
 def create_boats(quantity: int, len:int, unit: int):
-
-    print("OLHA O LEN: ", len)
     
     if unit == 0:
         for i in range(quantity-1):
             barco = Boats.boat(i+1,seed=random.randint(0,len),coordenates=random.randint(0,len), direction=random.randint(0,1))
             barco.value = i+1
+            barco.id = random.randint((1*barco.value),(10*barco.value))
+            print("OH O BARCO ID AQUI: ",barco.id)
             boat_list.append(barco)
         else:
             barco = Boats.boat(quantity,seed=random.randint(0,len),coordenates=random.randint(0,len), direction=random.randint(0,1))
             barco.value = quantity
+            barco.id = random.randint(10,100)
             boat_list.append(barco) 
 
 def place_boat(barco: Boats.boat, mapa: Map.Map, time: int):
 
     if time >= 2:
         aux = barco.value
+        aux2 = barco.id
         barco = Boats.boat(size=barco.size,seed=random.randint(0,mapa.x-1), coordenates=random.randint(0,mapa.x-1), direction=random.randint(0,1))
         barco.value = aux
+        barco.id = aux2
         return place_boat(barco, mapa, 0)
     
     # horizontal placement
@@ -110,19 +113,17 @@ def place_boat(barco: Boats.boat, mapa: Map.Map, time: int):
         i : int = 0
         aux : int = 0
         while (i < barco.size):
-            print("horizontal: ",barco.value, i)
-            
             # try to place the boat in the right direction
             if aux == 0:
                 if barco.coordenates + i < mapa.x and mapa.grid[barco.seed][barco.coordenates + i] == 0 :
-                    mapa.grid[barco.seed][barco.coordenates + i] = barco.value
+                    mapa.grid[barco.seed][barco.coordenates + i] = barco.id
                     i+=1
            
                 # if fails, erase the placed parts
                 else:
                     j = i
                     while(j >= 0):
-                        if barco.coordenates + j < mapa.x and mapa.grid[barco.seed][barco.coordenates + j] == barco.value:
+                        if barco.coordenates + j < mapa.x and mapa.grid[barco.seed][barco.coordenates + j] == barco.id:
                             mapa.grid[barco.seed][barco.coordenates + j] = 0
                         j-=1
                         i = 0
@@ -131,14 +132,14 @@ def place_boat(barco: Boats.boat, mapa: Map.Map, time: int):
             # try to place the boat in left direction
             elif aux == 1:
                 if barco.coordenates - i >= 0 and mapa.grid[barco.seed][barco.coordenates - i] == 0 :
-                    mapa.grid[barco.seed][barco.coordenates - i] = barco.value
+                    mapa.grid[barco.seed][barco.coordenates - i] = barco.id
                     i+=1
 
                 # if fails, erese the placed parts
                 else:
                     j = i
                     while(j >= 0):
-                        if barco.coordenates - j >= 0 and mapa.grid[barco.seed][barco.coordenates - j] == barco.value:
+                        if barco.coordenates - j >= 0 and mapa.grid[barco.seed][barco.coordenates - j] == barco.id:
                             mapa.grid[barco.seed][barco.coordenates - j] = 0
                         j -=1
                     i = 0
@@ -154,19 +155,18 @@ def place_boat(barco: Boats.boat, mapa: Map.Map, time: int):
         aux : int = 0
 
         while (i < barco.size):
-            print("vertical: ",barco.value, i)
             # try to place the boat in down direction
             if aux == 0:
 
                 if barco.seed + i < mapa.y and mapa.grid[barco.seed + i][barco.coordenates] == 0 :
-                    mapa.grid[barco.seed + i][barco.coordenates] = barco.value
+                    mapa.grid[barco.seed + i][barco.coordenates] = barco.id
                     i+=1
 
                 # if fails, erase the placed parts
                 else:
                     j = i
                     while(j >= 0):
-                        if barco.seed + j < mapa.y and mapa.grid[barco.seed + j][barco.coordenates] == barco.value:
+                        if barco.seed + j < mapa.y and mapa.grid[barco.seed + j][barco.coordenates] == barco.id:
                             mapa.grid[barco.seed + j][barco.coordenates] = 0
                         j-=1
                         i = 0
@@ -175,14 +175,14 @@ def place_boat(barco: Boats.boat, mapa: Map.Map, time: int):
             # try to place the boat in up direction
             elif aux == 1:
                 if barco.seed - i >= 0 and mapa.grid[barco.seed - i][barco.coordenates] == 0 :
-                    mapa.grid[barco.seed - i][barco.coordenates] = barco.value
+                    mapa.grid[barco.seed - i][barco.coordenates] = barco.id
                     i+=1
 
                 # if fails, erase the placed parts
                 else:
                     j = i
                     while(j >= 0):
-                        if barco.seed - j >= 0 and mapa.grid[barco.seed - j][barco.coordenates] == barco.value:
+                        if barco.seed - j >= 0 and mapa.grid[barco.seed - j][barco.coordenates] == barco.id:
                             mapa.grid[barco.seed - j][barco.coordenates] = 0
                         j-=1
                     i = 0

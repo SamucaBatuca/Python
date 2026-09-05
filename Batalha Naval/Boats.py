@@ -6,10 +6,6 @@ class boat:
         self.size = size
         self.seed = seed
         self.coordenates = coordenates
-        self.damage = False
+        self.id = int                                       # the boat's indentification
         self.direction = direction                          # 0 for horizontal, 1 for vertical
-        self.value:int                                      # the boat's number
-
-    def get_damage(self):
-        self.damage = True
-
+        self.value = int                                      # the boat's number
