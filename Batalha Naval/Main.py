@@ -83,7 +83,9 @@ def game(mode:int):
             
 
 
-def create_boats(quantity: int, len:int, unit: int):
+def create_boats(quantity: int, len:int, unit: int): 
+
+    # MÉTODO DE CORREÇÃO NA UTILIZAÇÃO DE OBJETOS: UTILIZAR A FUNCÃO "ID" DO PYTHON PARA DIFERENCIAR OS BARCOS !!!!!!!!!
     
     if unit == 0:
         for i in range(quantity-1):
